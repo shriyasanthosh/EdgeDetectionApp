@@ -1,24 +1,45 @@
-<?xml version="1.0" encoding="utf-8"?> 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" 
-    android:layout_width="match_parent" 
-    android:layout_height="match_parent"> 
- 
-    <TextureView 
-        android:id="@+id/texture_view" 
-        android:layout_width="match_parent" 
-        android:layout_height="match_parent" /> 
- 
-    <TextView 
-        android:id="@+id/fps_counter" 
-        android:layout_width="wrap_content" 
-        android:layout_height="wrap_content" 
-        android:layout_alignParentTop="true" 
-        android:layout_alignParentEnd="true" 
-        android:layout_margin="16dp" 
-        android:text="@string/fps_counter" 
-        android:textColor="@color/white" 
-        android:textSize="16sp" 
-        android:background="@color/fps_background" 
-        android:padding="8dp" /> 
- 
-</RelativeLayout> 
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Camera preview (hidden, used for frame capture) -->
+    <TextureView
+        android:id="@+id/texture_view"
+        android:layout_width="1dp"
+        android:layout_height="1dp"
+        android:visibility="invisible" />
+
+    <!-- OpenGL surface for rendering processed frames -->
+    <android.opengl.GLSurfaceView
+        android:id="@+id/gl_surface_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <!-- FPS Counter -->
+    <TextView
+        android:id="@+id/fps_counter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="16dp"
+        android:text="FPS: 0"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:background="@color/fps_background"
+        android:padding="8dp" />
+
+    <!-- Toggle Button -->
+    <Button
+        android:id="@+id/toggle_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="16dp"
+        android:text="Toggle Edge Detection"
+        android:background="@color/button_background"
+        android:textColor="@color/white" />
+
+</RelativeLayout>
