@@ -1,0 +1,49 @@
+<!DOCTYPE html> 
+<html lang="en"> 
+<head> 
+    <meta charset="UTF-8"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <title>Edge Detection Viewer</title> 
+    <style> 
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 0; 
+            padding: 20px; 
+            background-color: #f0f0f0; 
+        } 
+        .container { 
+            max-width: 800px; 
+            margin: 0 auto; 
+            background: white; 
+            padding: 20px; 
+            border-radius: 8px; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1); 
+        } 
+        canvas { 
+            border: 2px solid #333; 
+            display: block; 
+            margin: 20px auto; 
+        } 
+        .stats { 
+            text-align: center; 
+            margin: 20px 0; 
+        } 
+        .fps-counter { 
+            font-size: 18px; 
+            font-weight: bold; 
+            color: #007bff; 
+        } 
+    </style> 
+</head> 
+<body> 
+    <div class="container"> 
+        <h1>Edge Detection Viewer</h1> 
+        <div class="stats"> 
+            <div id="fps-counter" class="fps-counter">FPS: 0</div> 
+        </div> 
+        <canvas id="canvas"></canvas> 
+        <p>This is a sample processed frame from the Android app showing edge detection results.</p> 
+    </div> 
+    <script src="dist/app.js"></script> 
+</body> 
+</html> 
