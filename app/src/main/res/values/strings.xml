@@ -1,0 +1,5 @@
+<resources> 
+    <string name="app_name">Edge Detection App</string> 
+    <string name="camera_permission_required">Camera permission required</string> 
+    <string name="fps_counter">FPS: %d</string> 
+</resources> 
