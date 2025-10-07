@@ -1,0 +1,21 @@
+# Android 
+*.iml 
+.gradle 
+/local.properties 
+/.idea/ 
+.DS_Store 
+/build 
+/captures 
+.externalNativeBuild 
+.cxx 
+local.properties 
+ECHO is on.
+# Node modules 
+node_modules/ 
+npm-debug.log* 
+yarn-debug.log* 
+yarn-error.log* 
+ECHO is on.
+# TypeScript 
+*.tsbuildinfo 
+dist/ 
