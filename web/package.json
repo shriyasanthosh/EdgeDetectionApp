@@ -1,0 +1,14 @@
+{ 
+  "name": "edge-detection-viewer", 
+  "version": "1.0.0", 
+  "description": "Web viewer for Android edge detection app", 
+  "main": "dist/app.js", 
+  "scripts": { 
+    "build": "tsc", 
+    "dev": "tsc --watch", 
+    "serve": "python -m http.server 8000" 
+  }, 
+  "devDependencies": { 
+    "typescript": "^5.0.0" 
+  } 
+} 
