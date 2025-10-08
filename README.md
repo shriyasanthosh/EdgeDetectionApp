@@ -272,15 +272,23 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **Focus**: Real-time computer vision processing
 - **Assessment**: Advanced mobile development skills
 
-## 🎯 Assessment Criteria Met
+## 📱 Screenshots
 
-- ✅ **Native-C++ Integration (JNI)**: 25% - Complete JNI bridge with proper memory management
-- ✅ **OpenCV Usage**: 20% - Real Canny edge detection with preprocessing  
-- ✅ **OpenGL Rendering**: 20% - Full OpenGL ES 2.0 pipeline with shaders
-- ✅ **TypeScript Web Viewer**: 20% - Interactive viewer with frame processing simulation
-- ✅ **Project Structure & Documentation**: 15% - Clean modular structure with comprehensive docs
+### Web Viewer - Main Interface
+![Web Viewer - Main Interface](https://user-images.githubusercontent.com/placeholder1)
+*Real-time edge detection simulation with modern UI and camera processing*
 
-**Total Score: 100%** - All assessment requirements fully implemented
+### Web Viewer - Edge Detection ON
+![Web Viewer - Edge Detection ON](https://user-images.githubusercontent.com/placeholder2)
+*Edge detection processing with geometric patterns and real-time statistics*
+
+### Web Viewer - Edge Detection OFF
+![Web Viewer - Edge Detection OFF](https://user-images.githubusercontent.com/placeholder3)
+*Original camera feed simulation with processing indicators*
+
+### Web Viewer - Performance Statistics
+![Web Viewer - Performance Statistics](https://user-images.githubusercontent.com/placeholder4)
+*Real-time FPS monitoring, frame processing, and interactive controls*
 
 ---
 
