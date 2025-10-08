@@ -15,6 +15,7 @@ class OpenGLRenderer : GLSurfaceView.Renderer {
     private var positionHandle: Int = 0
     private var textureHandle: Int = 0
     private var mvpMatrixHandle: Int = 0
+    private var textureUniformHandle: Int = 0
     
     private val mvpMatrix = FloatArray(16)
     private val projectionMatrix = FloatArray(16)
@@ -76,6 +77,7 @@ class OpenGLRenderer : GLSurfaceView.Renderer {
         positionHandle = GLES20.glGetAttribLocation(program, "vPosition")
         textureHandle = GLES20.glGetAttribLocation(program, "vTexCoord")
         mvpMatrixHandle = GLES20.glGetUniformLocation(program, "uMVPMatrix")
+        textureUniformHandle = GLES20.glGetUniformLocation(program, "u_Texture")
         
         // Generate texture
         val textures = IntArray(1)
@@ -117,6 +119,7 @@ class OpenGLRenderer : GLSurfaceView.Renderer {
         
         // Update texture if we have new frame data
         frameData?.let { data ->
+            GLES20.glActiveTexture(GLES20.GL_TEXTURE0)
             GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureId)
             GLES20.glTexImage2D(
                 GLES20.GL_TEXTURE_2D, 0, GLES20.GL_RGB,
@@ -125,6 +128,11 @@ class OpenGLRenderer : GLSurfaceView.Renderer {
                 ByteBuffer.wrap(data)
             )
         }
+        
+        // Bind texture for rendering
+        GLES20.glActiveTexture(GLES20.GL_TEXTURE0)
+        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureId)
+        GLES20.glUniform1i(textureUniformHandle, 0)
         
         // Draw quad
         GLES20.glDrawArrays(GLES20.GL_TRIANGLE_STRIP, 0, 4)
@@ -148,6 +156,17 @@ class OpenGLRenderer : GLSurfaceView.Renderer {
         val shader = GLES20.glCreateShader(type)
         GLES20.glShaderSource(shader, shaderCode)
         GLES20.glCompileShader(shader)
+        
+        // Check compilation status
+        val compileStatus = IntArray(1)
+        GLES20.glGetShaderiv(shader, GLES20.GL_COMPILE_STATUS, compileStatus, 0)
+        if (compileStatus[0] == 0) {
+            val error = GLES20.glGetShaderInfoLog(shader)
+            android.util.Log.e("OpenGLRenderer", "Shader compilation failed: $error")
+            GLES20.glDeleteShader(shader)
+            return 0
+        }
+        
         return shader
     }
     

@@ -1,2 +1,3 @@
 rootProject.name = "EdgeDetectionApp" 
-include ':app' 
+include ':app'
+include ':opencv' 

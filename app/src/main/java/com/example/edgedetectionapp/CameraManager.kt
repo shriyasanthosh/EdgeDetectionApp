@@ -15,12 +15,14 @@ import android.media.ImageReader
 import android.os.Handler
 import android.os.HandlerThread
 import java.nio.ByteBuffer
+import com.example.edgedetectionapp.OpenGLRenderer
 
 class CameraManager(
     private val context: Context,
     private val textureView: TextureView,
     private val openCVProcessor: OpenCVProcessor,
-    private val openGLRenderer: OpenGLRenderer
+    private val openGLRenderer: OpenGLRenderer,
+    private val fpsCounter: android.widget.TextView
 ) {
     private var cameraDevice: CameraDevice? = null
     private var captureSession: CameraCaptureSession? = null
@@ -61,29 +63,41 @@ class CameraManager(
     }
 
     private fun processFrame(bitmap: Bitmap) {
-        // Convert bitmap to byte array for OpenCV processing
-        val width = bitmap.width
-        val height = bitmap.height
-        val pixels = IntArray(width * height)
-        bitmap.getPixels(pixels, 0, width, 0, 0, width, height)
-        
-        // Convert ARGB to RGB
-        val rgbData = ByteArray(width * height * 3)
-        for (i in pixels.indices) {
-            val pixel = pixels[i]
-            rgbData[i * 3] = (pixel shr 16 and 0xFF).toByte()     // R
-            rgbData[i * 3 + 1] = (pixel shr 8 and 0xFF).toByte()  // G
-            rgbData[i * 3 + 2] = (pixel and 0xFF).toByte()        // B
+        try {
+            // Convert bitmap to byte array for OpenCV processing
+            val width = bitmap.width
+            val height = bitmap.height
+            val pixels = IntArray(width * height)
+            bitmap.getPixels(pixels, 0, width, 0, 0, width, height)
+            
+            // Convert ARGB to RGB
+            val rgbData = ByteArray(width * height * 3)
+            for (i in pixels.indices) {
+                val pixel = pixels[i]
+                rgbData[i * 3] = (pixel shr 16 and 0xFF).toByte()     // R
+                rgbData[i * 3 + 1] = (pixel shr 8 and 0xFF).toByte()  // G
+                rgbData[i * 3 + 2] = (pixel and 0xFF).toByte()        // B
+            }
+            
+            // Process with OpenCV on background thread
+            backgroundHandler?.post {
+                try {
+                    val processedData = openCVProcessor.processFrameData(rgbData, width, height)
+                    
+                    // Update OpenGL renderer on main thread
+                    (context as? android.app.Activity)?.runOnUiThread {
+                        openGLRenderer.updateFrame(processedData, width, height)
+                    }
+                } catch (e: Exception) {
+                    android.util.Log.e("CameraManager", "Error processing frame: ${e.message}")
+                }
+            }
+            
+            // Update FPS counter
+            updateFPS()
+        } catch (e: Exception) {
+            android.util.Log.e("CameraManager", "Error in processFrame: ${e.message}")
         }
-        
-        // Process with OpenCV
-        val processedData = openCVProcessor.processFrameData(rgbData, width, height)
-        
-        // Update OpenGL renderer
-        openGLRenderer.updateFrame(processedData, width, height)
-        
-        // Update FPS counter
-        updateFPS()
     }
 
     private fun updateFPS() {
@@ -91,7 +105,10 @@ class CameraManager(
         val currentTime = System.currentTimeMillis()
         if (currentTime - lastTime >= 1000) {
             val fps = (frameCount * 1000) / (currentTime - lastTime)
-            // Update FPS display (you can add a callback here)
+            // Update FPS display on UI thread
+            (context as? android.app.Activity)?.runOnUiThread {
+                fpsCounter.text = "FPS: $fps"
+            }
             frameCount = 0
             lastTime = currentTime
         }

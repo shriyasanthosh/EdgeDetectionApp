@@ -3,6 +3,7 @@ package com.example.edgedetectionapp
 import android.Manifest
 import android.content.pm.PackageManager
 import android.opengl.GLSurfaceView
+import com.example.edgedetectionapp.OpenGLRenderer
 import android.os.Bundle
 import android.view.TextureView
 import android.widget.Toast
@@ -18,6 +19,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var cameraManager: CameraManager
     private lateinit var openCVProcessor: OpenCVProcessor
     private lateinit var openGLRenderer: OpenGLRenderer
+    private lateinit var fpsCounter: android.widget.TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +39,7 @@ class MainActivity : AppCompatActivity() {
     private fun initializeViews() {
         textureView = findViewById(R.id.texture_view)
         glSurfaceView = findViewById(R.id.gl_surface_view)
+        fpsCounter = findViewById(R.id.fps_counter)
         
         // Set up toggle button
         findViewById<android.widget.Button>(R.id.toggle_button).setOnClickListener {
@@ -71,7 +74,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initializeCamera() {
-        cameraManager = CameraManager(this, textureView, openCVProcessor, openGLRenderer)
+        cameraManager = CameraManager(this, textureView, openCVProcessor, openGLRenderer, fpsCounter)
         Toast.makeText(this, "Camera initialized!", Toast.LENGTH_SHORT).show()
     }
 
